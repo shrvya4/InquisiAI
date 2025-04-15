@@ -11,7 +11,7 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Configure Google Gemini API
-genai.configure(api_key="AIzaSyAMYCDMw1UEiW2IJSXAAJESYRmUA1p9Mak")  # Replace with your actual API key
+genai.configure(api_key="")  # Replace with your actual API key
 
 chat_model = genai.GenerativeModel("gemini-1.5-pro")
 chat_session = None
