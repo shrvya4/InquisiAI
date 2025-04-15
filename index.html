@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Content Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>📚 YouTube & PDF AI Assistant</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+      <input type="file" name="pdf">
+      <input type="text" name="youtube_url" placeholder="YouTube video URL">
+      <button type="submit">Analyze</button>
+    </form>
+
+    {% if summary %}
+      <h2>📝 Summary</h2>
+      <p>{{ summary.summary }}</p>
+
+      <h3>🔑 Key Points</h3>
+      <ul>
+        {% for point in summary.key_points %}
+          <li>{{ point }}</li>
+        {% endfor %}
+      </ul>
+
+      <h3>📈 Evaluation: {{ summary.evaluation }}</h3>
+
+      <h3>💼 LinkedIn Post</h3>
+      <p>{{ summary.linkedin_post }}</p>
+
+      <h3>💬 Ask a Question</h3>
+      <input type="text" id="questionInput" placeholder="Ask anything..." />
+      <button onclick="askQuestion()">Ask</button>
+      <div id="answerBox"></div>
+    {% endif %}
+  </div>
+
+  <script>
+    async function askQuestion() {
+      const question = document.getElementById("questionInput").value;
+      const response = await fetch("/ask", {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({question})
+      });
+      const data = await response.json();
+      document.getElementById("answerBox").innerText = data.answer;
+    }
+  </script>
+</body>
+</html>
